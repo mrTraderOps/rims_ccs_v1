@@ -7,9 +7,9 @@ class BoxesList extends StatefulWidget {
 
   final Function(int) onSelectBox;
   final Future<List<List<dynamic>>>? boxesFuture;
-  final String title;
+  // final String title;
 
-  BoxesList({required this.onSelectBox, required this.boxesFuture, required this.title});
+  BoxesList({required this.onSelectBox, required this.boxesFuture});
 
   @override
   State<BoxesList> createState() => _robotBoxesListState();
@@ -18,8 +18,8 @@ class BoxesList extends StatefulWidget {
 class _robotBoxesListState extends State<BoxesList> {
   
   Future<List<List<dynamic>>>? get _boxesFuture => widget.boxesFuture;
-  String get _title => widget.title;
-  
+  // String get _title => widget.title;
+
   int onSelect = 0;
 
   void _onSelectedBox(int index) {
@@ -51,7 +51,7 @@ class _robotBoxesListState extends State<BoxesList> {
             itemBuilder: (context, index) {
               final boxData = boxesList[index];
 
-              return Box(title: _title,
+              return Box(
                 onSelectedBox: _onSelectedBox,
                 boxData: boxData,
               );

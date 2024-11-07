@@ -7,9 +7,9 @@ import 'package:rims_ccs_v1/views/styles.dart';
 class Box extends StatefulWidget{
   final List<dynamic> boxData;
   final Function (int) onSelectedBox;
-  final String title;
+  // final String title;
 
-  Box({required this.onSelectedBox, required this.boxData, required this.title});
+  Box({required this.onSelectedBox, required this.boxData});
   @override
   State<Box> createState() => _BoxState();
 }
@@ -18,7 +18,7 @@ class _BoxState extends State<Box> {
 
   Function get _onSelectedBox => widget.onSelectedBox;
   List<dynamic> get _boxData => widget.boxData;
-  String get _title => widget.title;
+  // String get _title => widget.title;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class _BoxState extends State<Box> {
                   child: Container(
                     height: 135,
                     width: 160,
-                    child: BoxData(title: _title, data: _boxData),
+                    child: BoxData(data: _boxData),
                   ),
                 )
               ],

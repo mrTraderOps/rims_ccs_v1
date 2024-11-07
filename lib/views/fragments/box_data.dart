@@ -7,9 +7,9 @@ import 'box/box_num.dart';
 
 class BoxData extends StatefulWidget {
   final List<dynamic> data;
-  final String title;
+  // final String title;
 
-  BoxData({required this.data, required this.title});
+  BoxData({required this.data});
 
   @override
   State<BoxData> createState() => _BoxDataState();
@@ -17,7 +17,7 @@ class BoxData extends StatefulWidget {
 
 class _BoxDataState extends State<BoxData> {
 
- String get _title => widget.title;
+//  String get _title => widget.title;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _BoxDataState extends State<BoxData> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BoxNumber(_title, boxNum),
+          BoxNumber(boxNum),
           BoxStatus(status),
           BoxGroupSection(section),
         ],

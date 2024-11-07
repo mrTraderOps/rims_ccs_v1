@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class BoxNumber extends StatelessWidget {
 
-  final String boxNum, title;
+  final String boxNum;
 
-  BoxNumber(this.title, this.boxNum); 
+  BoxNumber(this.boxNum); 
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class BoxNumber extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 10,bottom: 5),
       child: Text(
-              '$title No. $boxNum',
+              'Box No. $boxNum',
               style: TextStyle(
                 fontFamily: 'Mina',
                 color: Color.fromRGBO(28, 27, 45, 0.81),

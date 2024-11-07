@@ -9,20 +9,20 @@ import 'package:rims_ccs_v1/views/fragments/selected_box/selected_box.dart';
 import '../fragments/drawer/drawer.dart';
 import '../styles.dart';
 
-class AdminHomepage extends StatefulWidget {
+class ProfHomepage extends StatefulWidget {
   final String role, nickname, title, name, suffix;
 
-  AdminHomepage({required this.role,
+  ProfHomepage({required this.role,
       required this.nickname,
       required this.title,
       required this.name,
       required this.suffix});
 
   @override
-  State<AdminHomepage> createState() => _AdminHomepageState();
+  State<ProfHomepage> createState() => _ProfHomepageState();
 }
 
-class _AdminHomepageState extends State<AdminHomepage> {
+class _ProfHomepageState extends State<ProfHomepage> {
 
   int _selectedIndex = 0;
   String AppBarTitle = '';
@@ -76,6 +76,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
       case 3:
         AppBarTitle = 'GROUP $groupNum - MODULES';
         titleContainer = 'Module';
+        headerTitle = 'MODULES';
         break;
       }
     } else {
@@ -83,6 +84,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
       case 3:
         AppBarTitle = 'GROUP $groupNum - BOXES';
         titleContainer = 'Box';
+        headerTitle = 'BOXES';
         break;
       }
     }
@@ -231,7 +233,6 @@ class _AdminHomepageState extends State<AdminHomepage> {
           ),
           Boxes(
             key: ValueKey(_selectedIndex),
-            // headerTitle: headerTitle,
             title: titleContainer,
             onSelectBox: _onSelectBox),
           SelectedBox()

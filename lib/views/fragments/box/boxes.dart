@@ -81,7 +81,7 @@ class _BoxesState extends State<Boxes> {
                         topRight: Radius.circular(30)),
                     color: Ui_Colors.white,
                   ),
-                  child: BoxesList(title: _title, onSelectBox: _onSelectBox, boxesFuture: _boxFuture),
+                  child: BoxesList(onSelectBox: _onSelectBox, boxesFuture: _boxFuture),
                 ),
               )   
             ),

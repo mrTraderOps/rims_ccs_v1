@@ -71,7 +71,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
       isActive = true;
     });
 
-    if (groupNum <= 5) {
+    if (groupNum < 5) {
       switch (index) {
       case 3:
         AppBarTitle = 'GROUP $groupNum - MODULES';
