@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255823423519",
+    "project_id": "rims-ccs",
+    "storage_bucket": "rims-ccs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255823423519:android:a37c8668986d621f964d2a",
+        "android_client_info": {
+          "package_name": "com.example.rimsccs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6vU6gN-4em6jG84_nUXLB1Iv7rFHBOPQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,7 @@
+include: package:flutter_lints/flutter.yaml
+analyzer:
+  errors:
+    sort_child_properties_last: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_final_fields: ignore
+    prefer_const_constructors: ignore

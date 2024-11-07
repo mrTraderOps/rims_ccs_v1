@@ -1,0 +1,38 @@
+name: rims_ccs_v1
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/boxes/
+  fonts:
+    - family: Mina
+      fonts:
+        - asset: assets/fonts/Mina-Bold.ttf
+          weight: 300
+        - asset: assets/fonts/Mina-Regular.ttf
+          weight: 600
+    - family: PressStart2P
+      fonts: 
+        - asset: assets/fonts/PressStart2P-Regular.ttf
+          weight: 300
