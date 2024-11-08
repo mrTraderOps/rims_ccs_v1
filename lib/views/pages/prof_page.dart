@@ -25,7 +25,7 @@ class ProfHomepage extends StatefulWidget {
 class _ProfHomepageState extends State<ProfHomepage> {
 
   int _selectedIndex = 0;
-  String AppBarTitle = '';
+  String AppBarTitle = '', groupNumStr = '';
   String titleContainer = '';
   String headerTitle = '';
   String newNickname = '';
@@ -71,7 +71,9 @@ class _ProfHomepageState extends State<ProfHomepage> {
       isActive = true;
     });
 
-    if (groupNum <= 5) {
+    groupNumStr = groupNum.toString();
+
+    if (groupNum < 5) {
       switch (index) {
       case 3:
         AppBarTitle = 'GROUP $groupNum - MODULES';
@@ -232,7 +234,9 @@ class _ProfHomepageState extends State<ProfHomepage> {
             buttonTitle: 'Instructor',
           ),
           Boxes(
+            groupNumStr: groupNumStr,
             key: ValueKey(_selectedIndex),
+            headerTitle: headerTitle,
             title: titleContainer,
             onSelectBox: _onSelectBox),
           SelectedBox()

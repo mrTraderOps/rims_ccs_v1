@@ -25,7 +25,7 @@ class AdminHomepage extends StatefulWidget {
 class _AdminHomepageState extends State<AdminHomepage> {
 
   int _selectedIndex = 0;
-  String AppBarTitle = '';
+  String AppBarTitle = '', groupNumStr = '';
   String titleContainer = '';
   String headerTitle = '';
   String newNickname = '';
@@ -71,11 +71,14 @@ class _AdminHomepageState extends State<AdminHomepage> {
       isActive = true;
     });
 
+    groupNumStr = groupNum.toString();
+
     if (groupNum < 5) {
       switch (index) {
       case 3:
         AppBarTitle = 'GROUP $groupNum - MODULES';
         titleContainer = 'Module';
+        headerTitle = 'MODULES';
         break;
       }
     } else {
@@ -83,6 +86,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
       case 3:
         AppBarTitle = 'GROUP $groupNum - BOXES';
         titleContainer = 'Box';
+        headerTitle = 'BOXES';
         break;
       }
     }
@@ -230,8 +234,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
             buttonTitle: 'Instructor',
           ),
           Boxes(
+            groupNumStr: groupNumStr,
             key: ValueKey(_selectedIndex),
-            // headerTitle: headerTitle,
+            headerTitle: headerTitle,
             title: titleContainer,
             onSelectBox: _onSelectBox),
           SelectedBox()

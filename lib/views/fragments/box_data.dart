@@ -7,9 +7,12 @@ import 'box/box_num.dart';
 
 class BoxData extends StatefulWidget {
   final List<dynamic> data;
-  // final String title;
+  final String title;
 
-  BoxData({required this.data});
+  BoxData({
+    required this.data,
+    required this.title
+    });
 
   @override
   State<BoxData> createState() => _BoxDataState();
@@ -17,14 +20,14 @@ class BoxData extends StatefulWidget {
 
 class _BoxDataState extends State<BoxData> {
 
-//  String get _title => widget.title;
+ String get _title => widget.title;
 
   @override
   Widget build(BuildContext context) {
     // Ensure data list has enough items to avoid index errors
-    final boxNum = widget.data.isNotEmpty ? widget.data[0] : '';
-    final status = widget.data.isNotEmpty ? widget.data[1] : '';
-    final section = widget.data.isNotEmpty ? widget.data[2] : '';
+    final boxNum = widget.data.isNotEmpty ? widget.data[1] : '';
+    final status = widget.data.isNotEmpty ? widget.data[2] : '';
+    final section = widget.data.isNotEmpty ? widget.data[3] : '';
 
     
 
@@ -33,7 +36,7 @@ class _BoxDataState extends State<BoxData> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BoxNumber(boxNum),
+          BoxNumber(title: _title, boxNum: boxNum,),
           BoxStatus(status),
           BoxGroupSection(section),
         ],

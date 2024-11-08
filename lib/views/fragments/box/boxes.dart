@@ -9,13 +9,14 @@ import 'package:rims_ccs_v1/views/styles.dart';
 class Boxes extends StatefulWidget {
 
   final Function(int) onSelectBox;
-  final String title;
+  final String title, headerTitle, groupNumStr;
 
   Boxes({
     Key? key, 
     required this.onSelectBox, 
     required this.title,
-    // required this.headerTitle
+    required this.headerTitle,
+    required this.groupNumStr,
     }) : super(key: key);
 
   @override
@@ -29,7 +30,8 @@ class _BoxesState extends State<Boxes> {
   final SelectedBoxServiceCrud _selectedBoxServiceCrud = SelectedBoxServiceCrud();
   Future<List<List<dynamic>>>? _boxFuture;
   String get _title => widget.title;
-  // String get _headerTitle => widget.headerTitle;
+  String get _headerTitle => widget.headerTitle;
+  String get _groupNumStr => widget.groupNumStr;
 
   @override
   void initState() {
@@ -64,7 +66,7 @@ class _BoxesState extends State<Boxes> {
                       style: robotBoxes1.robotBoxesStyle,
                     ),
                     Text(
-                      'BOXES',// '$_headerTitle',
+                      '$_headerTitle',
                       style: robotBoxes2.robotBoxesStyle,
                     ),
                   ],
@@ -81,7 +83,16 @@ class _BoxesState extends State<Boxes> {
                         topRight: Radius.circular(30)),
                     color: Ui_Colors.white,
                   ),
-                  child: BoxesList(onSelectBox: _onSelectBox, boxesFuture: _boxFuture),
+                  child: BoxesList(
+                    title: _title ,
+                    onSelectBox: _onSelectBox, 
+                    boxesFuture: _boxFuture,
+                    onDeleteRefresh: () {
+                      setState(() {
+                        _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('boxes');
+                      });
+                    },
+                  ),
                 ),
               )   
             ),
@@ -95,7 +106,7 @@ class _BoxesState extends State<Boxes> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Ui_Colors.darkBlue,
                   ),
-                  onPressed: () => showAddBoxDialog(context, () {
+                  onPressed: () => showAddBoxDialog(context, _title, _groupNumStr, () {
                   setState(() {
                     // Refresh the user list by fetching it again
                     _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('boxes');
@@ -110,7 +121,7 @@ class _BoxesState extends State<Boxes> {
                       ),
                       SizedBox(width: 5), 
                       Text(
-                        'Add New Box',
+                        'Add New $_title',
                         style: TextStyle(
                           color: Ui_Colors.white,
                           fontSize: 16

@@ -11,20 +11,22 @@ class SelectedBoxServiceCrud {
       .get();
 
   // Define the desired key order
-  const List<String> keyOrder = ['boxNum', 'status', 'section'];
+  const List<String> keyOrder = ['boxNum', 'status', 'section', 'group'];
 
   // Extract values based on the specified order
   return querySnapshot.docs.map((doc) {
     final data = doc.data() as Map<String, dynamic>;
 
+    // Add docId as the first item in the list
+    List<dynamic> values = [doc.id];
+
     // Map values based on the predefined order
-    return keyOrder.map((key) => data[key]).toList();
+    values.addAll(keyOrder.map((key) => data[key]).toList());
+
+    return values;
   }).toList();
-
-  // Incase of there are null values
-  // return keyOrder.map((key) => data[key] ?? 'default').toList();
-
 }
+
 
 
 

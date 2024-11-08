@@ -7,9 +7,15 @@ class BoxesList extends StatefulWidget {
 
   final Function(int) onSelectBox;
   final Future<List<List<dynamic>>>? boxesFuture;
-  // final String title;
+  final String title;
+  final VoidCallback onDeleteRefresh;
 
-  BoxesList({required this.onSelectBox, required this.boxesFuture});
+  BoxesList({
+    required this.onSelectBox, 
+    required this.boxesFuture,
+    required this.title,
+    required this.onDeleteRefresh,
+    });
 
   @override
   State<BoxesList> createState() => _robotBoxesListState();
@@ -17,8 +23,8 @@ class BoxesList extends StatefulWidget {
 
 class _robotBoxesListState extends State<BoxesList> {
   
-  Future<List<List<dynamic>>>? get _boxesFuture => widget.boxesFuture;
-  // String get _title => widget.title;
+  String get _title => widget.title;
+  VoidCallback get _onDeleteRefresh => widget.onDeleteRefresh;
 
   int onSelect = 0;
 
@@ -34,7 +40,7 @@ class _robotBoxesListState extends State<BoxesList> {
     return Padding(
       padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: FutureBuilder<List<List<dynamic>>>(
-        future: _boxesFuture,
+        future: widget.boxesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -50,8 +56,14 @@ class _robotBoxesListState extends State<BoxesList> {
             itemCount: boxesList.length,
             itemBuilder: (context, index) {
               final boxData = boxesList[index];
+              final _docId = boxData[0].toString();
+              final _boxNum = boxData[1].toString();
 
               return Box(
+                docId: _docId,
+                boxNum: _boxNum,
+                onDeleteRefresh: _onDeleteRefresh,
+                title: _title,
                 onSelectedBox: _onSelectedBox,
                 boxData: boxData,
               );

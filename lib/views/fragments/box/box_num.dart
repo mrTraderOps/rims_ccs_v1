@@ -2,11 +2,20 @@
 
 import 'package:flutter/material.dart';
 
-class BoxNumber extends StatelessWidget {
+class BoxNumber extends StatefulWidget {
 
-  final String boxNum;
+  final String boxNum, title;
 
-  BoxNumber(this.boxNum); 
+BoxNumber({required this.boxNum, required this.title}); 
+
+  @override
+  State<BoxNumber> createState() => _BoxNumberState();
+}
+
+class _BoxNumberState extends State<BoxNumber> {
+
+  String get _title => widget.title;
+  String get _boxNum => widget.boxNum;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,7 @@ class BoxNumber extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 10,bottom: 5),
       child: Text(
-              'Box No. $boxNum',
+              '$_title No. $_boxNum',
               style: TextStyle(
                 fontFamily: 'Mina',
                 color: Color.fromRGBO(28, 27, 45, 0.81),

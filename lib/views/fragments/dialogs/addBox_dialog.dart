@@ -3,29 +3,50 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/models/services/selected_box_service_CRUD.dart';
 import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_Format.dart';
+import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_GroupNum.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 
 class AddBoxDialog extends StatefulWidget {
 
   final VoidCallback onAddRefresh;
+  final String title;
+  final String groupNumStr;
 
-  AddBoxDialog({required this.onAddRefresh});
+  AddBoxDialog({
+    required this.onAddRefresh,
+    required this.title,
+    required this.groupNumStr
+    });
 
   @override
   _AddBoxDialogState createState() => _AddBoxDialogState();
 }
 
 class _AddBoxDialogState extends State<AddBoxDialog> {
+
+  String groupNum = '';
+
+  String get _groupNumStr => widget.groupNumStr;
+
   final TextEditingController _boxNumController = TextEditingController();
-  final TextEditingController _groupController = TextEditingController();
   final TextEditingController _sectionController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
+
+  late TextEditingController _groupController;
 
   final _formKey = GlobalKey<FormState>();
 
   SelectedBoxServiceCrud _firestoreService = SelectedBoxServiceCrud();
 
+  @override
+  void initState() {
+    super.initState();
+    _groupController = TextEditingController(text: _groupNumStr);
+  }
+
+
   VoidCallback get _onAddRefresh => widget.onAddRefresh;
+  String get _title => widget.title;
 
   Future<void> _addBox() async {
   if (_formKey.currentState!.validate()) {
@@ -54,7 +75,7 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "Add Box",
+        "Add $_title",
         style: TextStyle(
           fontFamily: 'Mina',
           fontSize: 25,
@@ -66,8 +87,8 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextformfieldFormat(textcontroller: _boxNumController, labelText: 'Box Number', obscureText: false, isUpdate: false,),
-            TextformfieldFormat(textcontroller: _groupController, labelText: 'Group Number', obscureText: false, isUpdate: false,),
+            TextformfieldFormat(textcontroller: _boxNumController, labelText: '$_title Number', obscureText: false, isUpdate: false,),
+            TextformfieldGroup(textcontroller: _groupController, labelText: 'Group', obscureText: false, isUpdate: false,),
             TextformfieldFormat(textcontroller: _sectionController, labelText: 'Section', obscureText: false, isUpdate: false,),
             TextformfieldFormat(textcontroller: _statusController, labelText: 'Status', obscureText: false, isUpdate: false,),
           ],

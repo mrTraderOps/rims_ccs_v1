@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/dialogs/addBox_dialog.dart';
 
-void showAddBoxDialog(BuildContext context, VoidCallback onAddRefresh) {
+void showAddBoxDialog(BuildContext context, String title,  String groupNum, VoidCallback onAddRefresh) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AddBoxDialog(onAddRefresh: onAddRefresh);
+      return AddBoxDialog(onAddRefresh: onAddRefresh, title: title, groupNumStr: groupNum,);
     },
   );
 }
