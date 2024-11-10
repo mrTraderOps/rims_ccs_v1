@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:rims_ccs_v1/models/services/role_account_CRUD.dart';
+import 'package:rims_ccs_v1/models/services/selected_box_service_CRUD.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 
 void showDeleteBoxDialog(BuildContext context, String documentId, String title, String BoxNum, VoidCallback onDeleteRefresh) {
-  final FirestoreService _firestoreService = FirestoreService();
+  
+  final SelectedBoxServiceCrud _firestoreService = SelectedBoxServiceCrud();
 
   showDialog(
     context: context,
@@ -32,6 +33,10 @@ void showDeleteBoxDialog(BuildContext context, String documentId, String title, 
               try {
                 // Call the Firestore delete method
                 await _firestoreService.deleteDocument('boxes', documentId);
+
+                // Delete all document
+                // await _firestoreService.deleteAll('boxes');
+                
                 
                 // Close the dialog
                 Navigator.of(context).pop();

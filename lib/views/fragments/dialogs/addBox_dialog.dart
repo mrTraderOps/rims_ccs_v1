@@ -29,8 +29,8 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
   String get _groupNumStr => widget.groupNumStr;
 
   final TextEditingController _boxNumController = TextEditingController();
-  final TextEditingController _sectionController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
+  final TextEditingController _sectionController = TextEditingController(text: '4A & 4B');
+  final TextEditingController _statusController = TextEditingController(text: 'INCOMPLETE');
 
   late TextEditingController _groupController;
 
@@ -56,6 +56,7 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
         group:  _groupController.text.trim(),
         section: _sectionController.text.trim(),
         status: _statusController.text.trim(),
+        title: _title.toLowerCase()
       );
 
       Navigator.of(context).pop();
@@ -107,7 +108,7 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
               backgroundColor: Ui_Colors.darkBlue,
               ),
           child: Text(
-            "Add Box",
+            "Add $_title",
             style: TextStyle(
               color: Ui_Colors.white
               ),

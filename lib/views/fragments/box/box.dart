@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:rims_ccs_v1/views/fragments/box_data.dart';
+import 'package:rims_ccs_v1/views/fragments/box/box_data.dart';
 import 'package:rims_ccs_v1/views/fragments/dialogs/showDeleteBoxDialog.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 

@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'items_input.dart';
+import '../selected_box/items_input.dart';
 
-class InventoryCheck extends StatelessWidget {
+class InventoryCheck extends StatefulWidget {
 
+  @override
+  State<InventoryCheck> createState() => _InventoryCheckState();
+}
+
+class _InventoryCheckState extends State<InventoryCheck> {
   @override
   Widget build(BuildContext context) {
     return Column(

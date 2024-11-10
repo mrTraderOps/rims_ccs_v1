@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/box/box_group_section.dart';
 import 'package:rims_ccs_v1/views/fragments/box/box_status.dart';
-import 'box/box_num.dart';
+import 'box_num.dart';
 
 class BoxData extends StatefulWidget {
   final List<dynamic> data;
@@ -25,9 +25,9 @@ class _BoxDataState extends State<BoxData> {
   @override
   Widget build(BuildContext context) {
     // Ensure data list has enough items to avoid index errors
-    final boxNum = widget.data.isNotEmpty ? widget.data[1] : '';
-    final status = widget.data.isNotEmpty ? widget.data[2] : '';
-    final section = widget.data.isNotEmpty ? widget.data[3] : '';
+    final boxNum = widget.data.isNotEmpty ? widget.data[0] : '';
+    final status = widget.data.isNotEmpty ? widget.data[1] : '';
+    final section = widget.data.isNotEmpty ? widget.data[2] : '';
 
     
 

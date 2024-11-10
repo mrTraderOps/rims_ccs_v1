@@ -6,12 +6,14 @@ import 'package:rims_ccs_v1/views/fragments/box/box.dart';
 class BoxesList extends StatefulWidget {
 
   final Function(int) onSelectBox;
+  final Function(String) onGetBoxNum;
   final Future<List<List<dynamic>>>? boxesFuture;
   final String title;
   final VoidCallback onDeleteRefresh;
 
   BoxesList({
-    required this.onSelectBox, 
+    required this.onSelectBox,
+    required this.onGetBoxNum, 
     required this.boxesFuture,
     required this.title,
     required this.onDeleteRefresh,
@@ -25,15 +27,8 @@ class _robotBoxesListState extends State<BoxesList> {
   
   String get _title => widget.title;
   VoidCallback get _onDeleteRefresh => widget.onDeleteRefresh;
-
-  int onSelect = 0;
-
-  void _onSelectedBox(int index) {
-    setState(() {
-      onSelect = index;
-    });
-    widget.onSelectBox(onSelect);
-  }
+  Function (String) get _onGetBoxNum => widget.onGetBoxNum;
+  Function (int) get _onSelectBox => widget.onSelectBox;
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +51,19 @@ class _robotBoxesListState extends State<BoxesList> {
             itemCount: boxesList.length,
             itemBuilder: (context, index) {
               final boxData = boxesList[index];
-              final _docId = boxData[0].toString();
-              final _boxNum = boxData[1].toString();
+              final _docId = boxData[3].toString();
+              final _boxNum = boxData[0].toString();
 
               return Box(
                 docId: _docId,
                 boxNum: _boxNum,
                 onDeleteRefresh: _onDeleteRefresh,
                 title: _title,
-                onSelectedBox: _onSelectedBox,
+                onSelectedBox: (selectedIndex) {
+                  // Call _onGetBoxNum only when a specific box is selected
+                  _onGetBoxNum(_boxNum);
+                  _onSelectBox(selectedIndex);
+                },
                 boxData: boxData,
               );
             },

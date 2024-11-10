@@ -174,7 +174,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
           // Boxes(
           //   key: ValueKey(_selectedIndex),
           //   onSelectBox: _onSelectBox),
-          SelectedBox()
+          // SelectedBox()
         ],
       )
     );

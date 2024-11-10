@@ -25,10 +25,12 @@ class AdminHomepage extends StatefulWidget {
 class _AdminHomepageState extends State<AdminHomepage> {
 
   int _selectedIndex = 0;
-  String AppBarTitle = '', groupNumStr = '';
+  String AppBarTitle = '';
   String titleContainer = '';
   String headerTitle = '';
   String newNickname = '';
+  String boxNumStr = '';
+  String groupNumStr = '';
 
   bool isActive = false;
   String get _role => widget.role;
@@ -103,6 +105,12 @@ class _AdminHomepageState extends State<AdminHomepage> {
         AppBarTitle = 'BOX INFO';
         break;
     }
+  }
+
+  void _onGetBoxNum(String boxNum) {
+    setState(() {
+      boxNumStr = boxNum;
+    });
   }
 
   void _onChangeNickname(String nickname) {
@@ -235,11 +243,18 @@ class _AdminHomepageState extends State<AdminHomepage> {
           ),
           Boxes(
             groupNumStr: groupNumStr,
+            onGetBoxNum: _onGetBoxNum,
             key: ValueKey(_selectedIndex),
             headerTitle: headerTitle,
             title: titleContainer,
             onSelectBox: _onSelectBox),
-          SelectedBox()
+          SelectedBox(
+            key: ValueKey(_selectedIndex),
+            titleContainer: titleContainer,
+            title: titleContainer.toUpperCase(),
+            groupNumStr: groupNumStr,
+            boxNumStr: boxNumStr
+          )
         ],
       ),
     );

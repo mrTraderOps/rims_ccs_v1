@@ -2,69 +2,85 @@
 
 import 'package:flutter/material.dart';
 import '../../../styles.dart';
-import '../../selected_box/item_count.dart';
 
-class ItemsData extends StatelessWidget{
+class ItemsData extends StatefulWidget{
   
-  final String pic_part;
-  final String name_part;
-  final String count_part;
+  final String num;
+  final String description;
+  final String qty;
+
+
+  ItemsData ({
+    required this.num,
+    required this.description,
+    required this.qty
+  });
+
+  @override
+  State<ItemsData> createState() => _ItemsDataState();
+}
+
+class _ItemsDataState extends State<ItemsData> {
+  String get _num => widget.num;
+  String get _description => widget.description;
+  String get _qty => widget.qty;
 
   double Boxheight = 70.0;
 
-  ItemsData (this.pic_part, this.name_part, this.count_part);
-
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      height: 70,
-      child: Row(
+    double bodyHeight = 45.0;
+
+    return  Table(
+        border: TableBorder.all(color: Ui_Colors.black),
+        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+        columnWidths: {
+            0: FixedColumnWidth(60.0),  // "NO." column width
+            1: FlexColumnWidth(4),      // "DESCRIPTION" column takes more space
+            2: FixedColumnWidth(60.0),  // "QTY" column width
+          },
         children: [
-          Expanded(
-            child: Container(
-              height: Boxheight,
-              decoration: BoxDecoration(
-                color: Ui_Colors.white,
-                border: Border.fromBorderSide(
-                  BorderSide(
-                    color: Ui_Colors.black    
-                  )
+          TableRow(
+              children: [
+                TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: SizedBox(
+                  height: bodyHeight,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(_num),
+                      ),
+                  ),
                 )
-              ),
-              child: Center(child: Text(pic_part)),
-            )
-          ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              height: Boxheight,
-              decoration: BoxDecoration(
-                color: Ui_Colors.white,
-                border: Border.fromBorderSide(
-                  BorderSide(
-                    color: Ui_Colors.black    
-                  )
+                ),
+                TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: SizedBox(
+                  height: bodyHeight,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(_description),
+                      ),
+                  ),
+                 )
+                ),
+                TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: SizedBox(
+                  height: bodyHeight,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(_qty),
+                      ),
+                  ),
                 )
-              ),
-              child: Center(child: Text(name_part)),
+                ),
+              ]
             )
-          ),
-          Expanded(
-            child: Container(
-              height: Boxheight,
-              decoration: BoxDecoration(
-                color: Ui_Colors.white,
-                border: Border.fromBorderSide(
-                  BorderSide(
-                    color: Ui_Colors.black    
-                  )
-                )
-              ),
-              child: ItemCount(count_part),
-            )
-          )
-        ]
-      )
-    );
+        ],
+      );
   }
 }

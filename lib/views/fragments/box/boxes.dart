@@ -9,11 +9,13 @@ import 'package:rims_ccs_v1/views/styles.dart';
 class Boxes extends StatefulWidget {
 
   final Function(int) onSelectBox;
+  final Function(String) onGetBoxNum;
   final String title, headerTitle, groupNumStr;
 
   Boxes({
     Key? key, 
-    required this.onSelectBox, 
+    required this.onSelectBox,
+    required this.onGetBoxNum,  
     required this.title,
     required this.headerTitle,
     required this.groupNumStr,
@@ -29,6 +31,7 @@ class _BoxesState extends State<Boxes> {
 
   final SelectedBoxServiceCrud _selectedBoxServiceCrud = SelectedBoxServiceCrud();
   Future<List<List<dynamic>>>? _boxFuture;
+  Function (String) get _onGetBoxNum => widget.onGetBoxNum; 
   String get _title => widget.title;
   String get _headerTitle => widget.headerTitle;
   String get _groupNumStr => widget.groupNumStr;
@@ -36,7 +39,7 @@ class _BoxesState extends State<Boxes> {
   @override
   void initState() {
     super.initState();
-    _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('boxes');
+    _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
   }
 
   @override
@@ -84,12 +87,13 @@ class _BoxesState extends State<Boxes> {
                     color: Ui_Colors.white,
                   ),
                   child: BoxesList(
-                    title: _title ,
-                    onSelectBox: _onSelectBox, 
+                    title: _title,
+                    onSelectBox: _onSelectBox,
+                    onGetBoxNum: _onGetBoxNum, 
                     boxesFuture: _boxFuture,
                     onDeleteRefresh: () {
                       setState(() {
-                        _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('boxes');
+                        _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
                       });
                     },
                   ),
@@ -109,7 +113,7 @@ class _BoxesState extends State<Boxes> {
                   onPressed: () => showAddBoxDialog(context, _title, _groupNumStr, () {
                   setState(() {
                     // Refresh the user list by fetching it again
-                    _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('boxes');
+                    _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
                     });
                   }),
                   child: Row(
