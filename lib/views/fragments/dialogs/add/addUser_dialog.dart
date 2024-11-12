@@ -9,31 +9,33 @@ import 'package:rims_ccs_v1/views/styles.dart';
 class AddUserDialog extends StatefulWidget {
   final VoidCallback onAddRefresh;
 
-  AddUserDialog({required this.onAddRefresh});
+  AddUserDialog({
+    required this.onAddRefresh,
+    });
   @override
   _AddUserDialogState createState() => _AddUserDialogState();
 }
 
 class _AddUserDialogState extends State<AddUserDialog> {
+  VoidCallback get _onAddRefresh => widget.onAddRefresh;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _nicknameController = TextEditingController();
-  final TextEditingController _roleController = TextEditingController(text: "Prof"); // Default role
+  final TextEditingController _roleController = TextEditingController(text: 'Prof'); // Default role
   final TextEditingController _suffixController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String? _emailError;
 
-  VoidCallback get _onAddRefresh => widget.onAddRefresh;
-
   FirestoreService _firestoreService = FirestoreService();
 
   Future<void> _registerUser() async {
   if (_formKey.currentState!.validate()) {
     try {
-      await _firestoreService.registerUser(
+      await _firestoreService.registerInstructor(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
         name: _nameController.text.trim(),

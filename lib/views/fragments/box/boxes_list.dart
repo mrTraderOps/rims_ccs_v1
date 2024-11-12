@@ -8,15 +8,18 @@ class BoxesList extends StatefulWidget {
   final Function(int) onSelectBox;
   final Function(String) onGetBoxNum;
   final Future<List<List<dynamic>>>? boxesFuture;
-  final String title;
+  final String title, role;
   final VoidCallback onDeleteRefresh;
+  final bool isAdmin;
 
   BoxesList({
     required this.onSelectBox,
     required this.onGetBoxNum, 
     required this.boxesFuture,
     required this.title,
+    required this.role,
     required this.onDeleteRefresh,
+    required this.isAdmin
     });
 
   @override
@@ -26,9 +29,12 @@ class BoxesList extends StatefulWidget {
 class _robotBoxesListState extends State<BoxesList> {
   
   String get _title => widget.title;
+  String get _role => widget.role;
   VoidCallback get _onDeleteRefresh => widget.onDeleteRefresh;
   Function (String) get _onGetBoxNum => widget.onGetBoxNum;
   Function (int) get _onSelectBox => widget.onSelectBox;
+
+  bool get _isAdmin => widget.isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +61,8 @@ class _robotBoxesListState extends State<BoxesList> {
               final _boxNum = boxData[0].toString();
 
               return Box(
+                role: _role,
+                isAdmin: _isAdmin,
                 docId: _docId,
                 boxNum: _boxNum,
                 onDeleteRefresh: _onDeleteRefresh,

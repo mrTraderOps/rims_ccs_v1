@@ -52,7 +52,10 @@ class _ItemsState extends State<Items> {
       future: _fetchModule,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {

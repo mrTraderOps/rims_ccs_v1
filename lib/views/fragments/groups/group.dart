@@ -26,7 +26,7 @@ class _GroupState extends State<Group> {
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: TextButton(
-          onPressed: () => _onSelectGroup(3, _num),
+          onPressed: () => _onSelectGroup(4, _num),
           child: Container(
             height: 90,
             width: 260,

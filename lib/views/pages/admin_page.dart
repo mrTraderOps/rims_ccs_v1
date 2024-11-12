@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/account_setting/account_setting.dart';
 import 'package:rims_ccs_v1/views/fragments/box/boxes.dart';
+import 'package:rims_ccs_v1/views/fragments/feedback/feedback.dart';
 import 'package:rims_ccs_v1/views/fragments/group_account/group_account.dart';
 import 'package:rims_ccs_v1/views/fragments/groups/Groups.dart';
 import 'package:rims_ccs_v1/views/fragments/selected_box/selected_box.dart';
@@ -33,36 +34,45 @@ class _AdminHomepageState extends State<AdminHomepage> {
   String groupNumStr = '';
 
   bool isActive = false;
+  bool isFeedback = false;
   String get _role => widget.role;
   String get _title => widget.title;
   String get _name => widget.name;
   String get _suffix => widget.suffix;
+  String get _nickname => widget.nickname;
 
   @override
   void initState () {
     super.initState();
-    newNickname = widget.nickname;
+    newNickname = _nickname;
   }
 
   void _onSelectTab(int index) {
     setState(() {
       _selectedIndex = index;
       isActive = true;
+      isFeedback = false;
     });
 
-    if (index <= 2) {
+    if (index <= 3) {
       Navigator.pop(context);
 
       switch (index) {
         case 0:
-          AppBarTitle = 'RIMS - CCS';
+          AppBarTitle = 'ROBOTRACK';
           break;
         case 1:
           AppBarTitle = 'PROFILE SETTING';
           break;
         case 2:
           AppBarTitle = 'INSTRUCTOR ACCOUNT';
-          break;  
+          break;
+        case 3:
+          setState(() {
+             isFeedback = true;
+          });
+          AppBarTitle = 'CONCERNS & FEEDBACK';
+          break;
       }
     } 
   }
@@ -77,7 +87,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
 
     if (groupNum < 5) {
       switch (index) {
-      case 3:
+      case 4:
         AppBarTitle = 'GROUP $groupNum - MODULES';
         titleContainer = 'Module';
         headerTitle = 'MODULES';
@@ -85,7 +95,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
       }
     } else {
       switch (index) {
-      case 3:
+      case 4:
         AppBarTitle = 'GROUP $groupNum - BOXES';
         titleContainer = 'Box';
         headerTitle = 'BOXES';
@@ -101,7 +111,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
     });
 
     switch (index) {
-      case 4:
+      case 5:
         AppBarTitle = 'BOX INFO';
         break;
     }
@@ -122,14 +132,14 @@ class _AdminHomepageState extends State<AdminHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 176, 135, 38),
+      backgroundColor: isFeedback ? Ui_Colors.skyBlue : const Color.fromARGB(255, 176, 135, 38),
       appBar: AppBar(
         toolbarHeight: 70.0,
         backgroundColor: Ui_Colors.darkBlue,
         title: Padding(
           padding: const EdgeInsets.only(top: 7),
           child: Text(
-            isActive ? AppBarTitle : 'RIMS - CCS',
+            isActive ? AppBarTitle : 'ROBOTRACK',
             style: TextStyle(
                 fontFamily: 'Mina',
                 fontSize: 25,
@@ -238,10 +248,13 @@ class _AdminHomepageState extends State<AdminHomepage> {
             updateNickname: _onChangeNickname,
           ),
           GroupAccount(
+            role: _role,
             key: ValueKey(_selectedIndex),
             buttonTitle: 'Instructor',
           ),
+          FeedbackPage(),
           Boxes(
+            role: _role,
             groupNumStr: groupNumStr,
             onGetBoxNum: _onGetBoxNum,
             key: ValueKey(_selectedIndex),
@@ -249,9 +262,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
             title: titleContainer,
             onSelectBox: _onSelectBox),
           SelectedBox(
+            loginName: _role,
             key: ValueKey(_selectedIndex),
             titleContainer: titleContainer,
-            title: titleContainer.toUpperCase(),
             groupNumStr: groupNumStr,
             boxNumStr: boxNumStr
           )

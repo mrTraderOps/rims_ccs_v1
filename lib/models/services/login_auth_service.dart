@@ -35,24 +35,39 @@ class LoginAuthService {
       Navigator.of(context).pop();
 
       if (userDoc.exists) {
-        String role = userDoc['role'];
-        String nickname = userDoc['nickname'];
-        String title = userDoc['title'];
-        String name = userDoc['name'];
-        String suffix = userDoc['suffix'];
-
-        // Navigate to the HomeScreen
-        Navigator.pushReplacementNamed(
-          context,
-          '/home',
-          arguments: {
-            'role': role,
-            'nickname': nickname,
-            'title': title,
-            'name': name,
-            'suffix': suffix,
-          },
-        );
+        String role = userDoc['Role'];
+        String title = userDoc['Title'];
+        
+        if (role == 'Group') {
+          String groupNum = userDoc['Group Number'];
+          String section = userDoc['Section'];
+          Navigator.pushReplacementNamed(
+            context,
+            '/home',
+            arguments: {
+              'Role': role,
+              'Group Number': groupNum,
+              'Section': section,
+              'Title': title,
+            },
+          );
+        } else {
+          String nickname = userDoc['Nickname'];
+          String name = userDoc['Name'];
+          String suffix = userDoc['Suffix'];
+          // Navigate to the HomeScreen
+          Navigator.pushReplacementNamed(
+            context,
+            '/home',
+            arguments: {
+              'Role': role,
+              'Nickname': nickname,
+              'Title': title,
+              'Name': name,
+              'Suffix': suffix,
+            },
+          );
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Successfully Logged In')),

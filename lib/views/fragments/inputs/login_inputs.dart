@@ -68,10 +68,13 @@ class LoginInputs extends StatelessWidget {
               child: Center(
                 child: ElevatedButton(
                   onPressed: onLogin,
+                  
                   child: Text('Login'),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-                    textStyle: TextStyle(fontSize: 18.0),
+                    textStyle: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

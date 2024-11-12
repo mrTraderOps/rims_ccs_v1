@@ -68,18 +68,45 @@ class RegisterInputs extends StatelessWidget {
                 Textfieldformat(textController: suffixController, hintText: 'Enter Your Suffix (Optional)'),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 30.0, top: 30.0),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: onRegister,
-                  child: Text('Register'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-                    textStyle: TextStyle(fontSize: 18.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 30.0, top: 30.0),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/');
+                      },
+                      child: Text('Back'),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+                        textStyle: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold
+                          ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(width: 30,),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 30.0, top: 30.0),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: onRegister,
+                      child: Text('Register'),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+                        textStyle: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold
+                          ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/models/services/selected_box_service_CRUD.dart';
 import 'package:rims_ccs_v1/views/fragments/box/boxes_list.dart';
-import 'package:rims_ccs_v1/views/fragments/dialogs/showAddBoxDialog.dart';
+import 'package:rims_ccs_v1/views/fragments/dialogs/add/showAddBoxDialog.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 
 class Boxes extends StatefulWidget {
 
   final Function(int) onSelectBox;
   final Function(String) onGetBoxNum;
-  final String title, headerTitle, groupNumStr;
+  final String title, headerTitle, groupNumStr, role;
 
   Boxes({
     Key? key, 
@@ -19,6 +19,7 @@ class Boxes extends StatefulWidget {
     required this.title,
     required this.headerTitle,
     required this.groupNumStr,
+    required this.role,
     }) : super(key: key);
 
   @override
@@ -35,12 +36,26 @@ class _BoxesState extends State<Boxes> {
   String get _title => widget.title;
   String get _headerTitle => widget.headerTitle;
   String get _groupNumStr => widget.groupNumStr;
+  String get _role => widget.role;
 
-  @override
+  bool isAdmin = true;
+
+ @override
   void initState() {
-    super.initState();
+  super.initState();
+
+    // Determine if the user is an admin
+    _checkIfAdmin();
+
+    // Fetch data for boxes
     _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
   }
+
+  void _checkIfAdmin() {
+    setState(() {
+      isAdmin = _role == 'Admin';
+    });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +102,8 @@ class _BoxesState extends State<Boxes> {
                     color: Ui_Colors.white,
                   ),
                   child: BoxesList(
+                    role: _role,
+                    isAdmin: isAdmin,
                     title: _title,
                     onSelectBox: _onSelectBox,
                     onGetBoxNum: _onGetBoxNum, 
@@ -100,43 +117,46 @@ class _BoxesState extends State<Boxes> {
                 ),
               )   
             ),
-          Positioned(
-            child: Container(
-              width: double.infinity,
-              color: Ui_Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Ui_Colors.darkBlue,
-                  ),
-                  onPressed: () => showAddBoxDialog(context, _title, _groupNumStr, () {
-                  setState(() {
-                    // Refresh the user list by fetching it again
-                    _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
-                    });
-                  }),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.add,
-                        color: Ui_Colors.white,
-                      ),
-                      SizedBox(width: 5), 
-                      Text(
-                        'Add New $_title',
-                        style: TextStyle(
+          Visibility(
+            visible: isAdmin,
+            child: Positioned(
+              child: Container(
+                width: double.infinity,
+                color: Ui_Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Ui_Colors.darkBlue,
+                    ),
+                    onPressed: () => showAddBoxDialog(context, _title, _groupNumStr, () {
+                    setState(() {
+                      // Refresh the user list by fetching it again
+                      _boxFuture = _selectedBoxServiceCrud.fetchDocumentValues('inventory', _groupNumStr);
+                      });
+                    }),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.add,
                           color: Ui_Colors.white,
-                          fontSize: 16
                         ),
-                      ),
-                    ],
-                  ),
-                )
+                        SizedBox(width: 5), 
+                        Text(
+                          'Add New $_title',
+                          style: TextStyle(
+                            color: Ui_Colors.white,
+                            fontSize: 16
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ),
+              )
               ),
-            )
-            )
+          )
         ],
       ),
     );

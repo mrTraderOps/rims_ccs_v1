@@ -62,7 +62,10 @@ class _MissingState extends State<Missing> {
       future: _tableData, 
       builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -70,10 +73,10 @@ class _MissingState extends State<Missing> {
               padding: const EdgeInsets.only(top: 50.0),
               child: Center(
                 child: Text(
-                  'Congrats! This $_titleContainer is COMPLETE!',
+                  'Congrats! This $_titleContainer has no Missing Item(s)!',
                   style: TextStyle(
                     fontFamily: 'Mina',
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold
                   ),)),
             );

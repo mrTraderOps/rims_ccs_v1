@@ -1,33 +1,32 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rims_ccs_v1/models/services/role_account_CRUD.dart';
-import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_Format.dart';
 import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_Password.dart';
+import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_Section.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 
-class ChangeCredentialsDialog extends StatefulWidget {
+class UpdateGroup extends StatefulWidget {
   final String userId;
   final Map<String, dynamic> userData; // The document ID of the user to be updated
   final VoidCallback onCredentialsUpdated; // Callback to refresh the user list
 
-  ChangeCredentialsDialog({
+  UpdateGroup({
     required this.userId,
      required this.userData,
     required this.onCredentialsUpdated,
   });
 
   @override
-  _ChangeCredentialsDialogState createState() => _ChangeCredentialsDialogState();
+  _UpdateGroupState createState() => _UpdateGroupState();
 }
 
-class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
+class _UpdateGroupState extends State<UpdateGroup> {
   late TextEditingController _emailController = TextEditingController();
   late TextEditingController _passwordController = TextEditingController();
-  late TextEditingController _nameController = TextEditingController();
-  late TextEditingController _nicknameController = TextEditingController();
-  late TextEditingController _suffixController = TextEditingController();
-  late TextEditingController _titleController = TextEditingController();
+  late TextEditingController _groupNumController = TextEditingController();
+  late TextEditingController _sectionController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   String? _emailError;
@@ -39,12 +38,10 @@ class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
   void initState() {
     super.initState();
     // Initialize the controllers with the existing user data
-    _emailController = TextEditingController(text: widget.userData['email'] ?? '');
+    _emailController = TextEditingController(text: widget.userData['Email'] ?? '');
     _passwordController = TextEditingController(text: widget.userData['password'] ?? '');
-    _nameController = TextEditingController(text: widget.userData['name'] ?? '');
-    _nicknameController = TextEditingController(text: widget.userData['nickname'] ?? '');
-    _suffixController = TextEditingController(text: widget.userData['suffix'] ?? '');
-    _titleController = TextEditingController(text: widget.userData['title'] ?? '');
+    _groupNumController = TextEditingController(text: widget.userData['Group Number'] ?? '');
+    _sectionController = TextEditingController(text: widget.userData['Section'] ?? '');
   }
 
   Future<void> _updateCredentials() async {
@@ -57,18 +54,17 @@ class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
 
       try {
         // Call Firestore service to update credentials
-        await _firestoreService.updateProfCredentials(
+        await _firestoreService.updateGroupCredentials(
           userId: widget.userId,
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
-          name: _nameController.text.trim(),
-          nickname: _nicknameController.text.trim(),
-          suffix: _suffixController.text.trim(),
-          title: _titleController.text.trim()
+          groupNum: _groupNumController.text.trim(),
+          section: _sectionController.text.trim(),
         );
 
-        // Close the dialog and trigger refresh
+      // Close the dialog and trigger refresh
         Navigator.of(context).pop();
+
         widget.onCredentialsUpdated();
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -91,10 +87,8 @@ class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _nameController.dispose();
-    _nicknameController.dispose();
-    _suffixController.dispose();
-    _titleController.dispose();
+    _groupNumController.dispose();
+    _sectionController.dispose();
     super.dispose();
   }
 
@@ -119,7 +113,7 @@ class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        "Change User Credentials",
+        "Change Group Credentials",
         style: TextStyle(
           fontFamily: 'Mina',
           fontSize: 25,
@@ -145,10 +139,32 @@ class _ChangeCredentialsDialogState extends State<ChangeCredentialsDialog> {
               validator: _validateEmail,
             ),
             TextformfieldPassword(textcontroller: _passwordController, labelText: 'Password', isUpdate: true),
-            TextformfieldFormat(textcontroller: _nameController, labelText: 'Name', obscureText: false, isUpdate: true),
-            TextformfieldFormat(textcontroller: _nicknameController, labelText: 'Nickname', obscureText: false, isUpdate: true),
-            TextformfieldFormat(textcontroller: _suffixController, labelText: 'Suffix', obscureText: false, isUpdate: true),
-            TextformfieldFormat(textcontroller: _titleController, labelText: 'Title', obscureText: false, isUpdate: true),
+            TextFormField(
+              controller: _groupNumController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(1), // Limit to 1 character
+                FilteringTextInputFormatter.digitsOnly, // Allow only digits
+              ],
+              decoration: InputDecoration(
+                labelText: 'New Group No.',
+                labelStyle: TextStyle(
+                  fontFamily: 'Mina',
+                  color: Ui_Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Field cannot be empty';
+                }
+                if (!RegExp(r'^\d$').hasMatch(value)) { // Ensure exactly one digit
+                  return 'Must contain exactly 1 digit';
+                }
+                return null;
+              },
+            ),
+            TextformfieldSection(textcontroller: _sectionController, labelText: 'New Section')
           ],
         ),
       ),

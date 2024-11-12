@@ -65,7 +65,7 @@ class _AccountSettingState extends State<AccountSetting> {
       if (data != null) {
         
         setState(() {
-          _nicknameHint = data['nickname'] ?? '';  
+          _nicknameHint = data['Nickname'] ?? '';  
           _emailHint = _auth.currentUser?.email ?? '';
           _updateNickname(_nicknameHint);
 

@@ -61,7 +61,10 @@ class _ExcessState extends State<Excess> {
       future: _tableData, 
       builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Padding(
+            padding: const EdgeInsets.only(top: 100.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -69,10 +72,10 @@ class _ExcessState extends State<Excess> {
               padding: const EdgeInsets.only(top: 50.0),
               child: Center(
                 child: Text(
-                  'Congrats! This $_titleContainer is COMPLETE!',
+                  'Congrats! This $_titleContainer has no Excess Item(s)!',
                   style: TextStyle(
                     fontFamily: 'Mina',
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold
                   ),)),
             );
@@ -91,7 +94,7 @@ class _ExcessState extends State<Excess> {
             children: [
               TableRow(
                   decoration: BoxDecoration(
-                  color: Ui_Colors.black
+                  color: Ui_Colors.yellow
                 ),
                 children: [
                   TableCell(

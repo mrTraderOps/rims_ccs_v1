@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/models/services/role_account_CRUD.dart';
-import 'package:rims_ccs_v1/views/fragments/dialogs/updateUser.dart';
+import 'package:rims_ccs_v1/views/fragments/dialogs/update/updateUser.dart';
 
 void showUpdateUserDialog(BuildContext context, String docId, VoidCallback onCredentialsUpdated) {
 

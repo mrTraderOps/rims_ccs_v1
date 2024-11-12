@@ -1,6 +1,6 @@
 //styles for all and every pages
 
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, constant_identifier_names
 
 import 'package:flutter/material.dart';
 
@@ -36,6 +36,13 @@ class Ui_fonts {
   fontWeight: FontWeight.bold,
   fontSize: 14,
   color: Color.fromRGBO(62, 64, 81, 0.758)
+  );
+
+  static const TextStyle SmallTitleTextBoldSkyBlue = TextStyle(
+  fontFamily: fontNameDefault,
+  fontWeight: FontWeight.bold,
+  fontSize: 14,
+  color: Ui_Colors.skyBlue
   );
 }
 

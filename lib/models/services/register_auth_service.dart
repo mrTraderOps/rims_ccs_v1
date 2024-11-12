@@ -33,12 +33,12 @@ class RegisterAuthService {
 
       // Store additional user information in Firestore
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
-        'email': email.trim(),
-        'name': name.trim(),
-        'nickname': nickname.trim(),
-        'role': 'Admin',
-        'title': title.trim(),
-        'suffix': suffix.trim(),
+        'Email': email.trim(),
+        'Name': name.trim(),
+        'Nickname': nickname.trim(),
+        'Role': 'Admin',
+        'Title': title.trim(),
+        'SuffixTitle': suffix.trim(),
       });
 
       // Close the loading dialog
@@ -70,4 +70,22 @@ class RegisterAuthService {
     }
   }
 
+  Future<String?> fetchAdminKey() async {
+    try {
+      // Access the 'adminkey' collection and get the specific document
+      DocumentSnapshot doc = await _firestore.collection('adminkey').doc('FGnPkdMtUOpaHfL1RWHP').get();
+
+      // Check if the document exists and contains the key
+      if (doc.exists && doc.data() != null) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return data['key']; // Returns the key value
+      } else {
+        print('Document does not exist or is empty.');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching admin key: $e');
+      return null;
+    }
+  }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -6,20 +8,47 @@ class FirestoreService {
   final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Authentication instance
 
   // Fetch All Documents under 'users' collection
-  Future<List<Map<String, dynamic>>> fetchDocuments(String collectionPath) async {
-    QuerySnapshot querySnapshot = await _firestore
-        .collection(collectionPath)
-        .where('role', isEqualTo: 'Prof')  // Filter for documents with role 'Prof'
-        .get();
+  Future<List<Map<String, dynamic>>> fetchDocuments(String collectionPath, String role) async {
+  String _role = '';
 
-    return querySnapshot.docs.map((doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      data['id'] = doc.id; // Add document ID to the data map
-      data.remove('role');
-
-      return data;  // Return the data with 'docId' and filtered by 'role'
-    }).toList();
+  if (role == 'Admin') {
+    _role = 'Prof';
+  } else if (role == 'Prof') {
+    _role = 'Group';
   }
+
+  QuerySnapshot querySnapshot = await _firestore
+      .collection(collectionPath)
+      .where('Role', isEqualTo: _role) // Filter documents by 'Role'
+      .get();
+
+  return querySnapshot.docs.map((doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    data['id'] = doc.id; // Add document ID
+    Map<String, dynamic> sortedData = {};
+
+    if (role == 'Admin') {
+      sortedData = {
+        'Nickname': data['Nickname'],
+        'Name': data['Name'],
+        'Suffix': data['Suffix'],
+        'Title': data['Title'],
+        'Email': data['Email'],
+        'id': data['id'],
+      };
+    } else if (role == 'Prof') {
+      sortedData = {
+        'Group Number': data['Group Number'],
+        'Section': data['Section'],
+        'Email': data['Email'],
+        'id': data['id'],
+      };
+    }
+
+    return sortedData; // Correctly return sorted data for each document
+  }).toList();
+}
+
 
   // Delete Documents by Id
   Future<void> deleteDocument(String collectionPath, String documentId) async {
@@ -27,7 +56,7 @@ class FirestoreService {
   }
 
   // Register a new Instructor and add to Firestore
-  Future<void> registerUser({
+  Future<void> registerInstructor({
     required String email,
     required String password,
     required String name,
@@ -45,12 +74,12 @@ class FirestoreService {
 
       // After successful registration, save user details in Firestore
       await _firestore.collection('users').doc(userCredential.user?.uid).set({
-        'email': email,
-        'name': name,
-        'nickname': nickname,
-        'role': role,
-        'suffix': suffix,
-        'title': title,
+        'Email': email,
+        'Name': name,
+        'Nickname': nickname,
+        'Role': role,
+        'Suffix': suffix,
+        'Title': title,
       });
     } catch (e) {
       print(e); // Handle errors appropriately, e.g., display a message to the user
@@ -58,6 +87,37 @@ class FirestoreService {
     }
   }
 
+  // Register a new Group and add to Firestore
+  Future<void> registerGroup({
+    required String email,
+    required String password,
+    required String groupNum,
+    required String section,
+    String role = "Group", // Default role is "Group"
+    String title = "BSCS"
+  }) async {
+    try {
+      // Register the user with Firebase Authentication
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // After successful registration, save user details in Firestore
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'Email': email,
+        'Group Number': groupNum,
+        'Section': section,
+        'Title' : '$title - $section',
+        'Role': role,
+         
+      });
+    } catch (e) {
+      print(e); // Handle errors appropriately, e.g., display a message to the user
+      throw Exception('Failed to register user: $e');
+    }
+  }
+  
   // Change Prof Credentials
   Future<void> updateProfCredentials({
   required String userId,
@@ -70,11 +130,11 @@ class FirestoreService {
 }) async {
   // Update user details in Firestore without the password
   await _firestore.collection('users').doc(userId).update({
-    'email': email,
-    'name': name,
-    'nickname': nickname,
-    'suffix': suffix,
-    'title': title,
+    'Email': email,
+    'Name': name,
+    'Nickname': nickname,
+    'Suffix': suffix,
+    'Title': title,
   });
 
   // Update email and password in Firebase Authentication
@@ -86,6 +146,29 @@ class FirestoreService {
   }
 }
 
+  // Change Group Credentials
+  Future<void> updateGroupCredentials({
+  required String userId,
+  required String email,
+  required String password,
+  required String groupNum,
+  required String section,
+}) async {
+  // Update user details in Firestore without the password
+  await _firestore.collection('users').doc(userId).update({
+    'Email': email,
+    'Group Number': groupNum,
+    'Section': section
+  });
+
+  // Update email and password in Firebase Authentication
+  final user = FirebaseAuth.instance.currentUser;
+
+  if (user != null) {
+    await user.verifyBeforeUpdateEmail(email); // Sends a verification email before updating the email
+    await user.updatePassword(password);       // Updates password in Firebase Auth only
+  }
+}
   // Fetch Again UserData by DocID
   Future<Map<String, dynamic>> getUserData(String userId) async {
     DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/models/services/login_auth_service.dart';
 import '../fragments/global_widget/rims_logoTitle.dart';
@@ -19,39 +17,48 @@ class _LoginPageState extends State<LoginPage> {
   void _handleLogin() {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kindly fill in both email and password')),
-        );
-
+        SnackBar(content: Text('Kindly fill in both email and password')),
+      );
       return;
     }
 
     // Check if email format is valid
-  final email = _emailController.text.trim();
-  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$'); // Simple regex for email format
-  if (!emailRegex.hasMatch(email)) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please enter a valid email address')),
-    );
-    return;
-  }
+    final email = _emailController.text.trim();
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$'); // Simple regex for email format
+    if (!emailRegex.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid email address')),
+      );
+      return;
+    }
 
     _loginAuthService.login(
-    context,
-    email,
-    _passwordController.text.trim(),
+      context,
+      email,
+      _passwordController.text.trim(),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Ui_Colors.skyBlue,
+      appBar: AppBar(
+        backgroundColor: Ui_Colors.skyBlue,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Ui_Colors.darkBlue),
+          onPressed: () {
+            Navigator.pushNamed(context, '/'); // Go back to the previous screen
+          },
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
             // 1st Box with RIMS_Logo and Title
             Expanded(
-              flex: 7,
+              flex: 6,
               child: Center(
                 child: RIMSLogoTitle(),
               ),

@@ -55,11 +55,16 @@ class _DrawerFragmentState extends State<DrawerFragment> {
         
         // Conditionally show "PROFILE SETTING" and "INSTRUCTOR ACCOUNT"
         if (_role == 'Admin' || _role == 'Prof') 
-          drawer_nav('PROFILE SETTING', onTap: () => _onTabBody(1)),
+        drawer_nav('PROFILE SETTING', onTap: () => _onTabBody(1)),
         
-        if (_role == 'Admin' || _role == 'Prof') 
-          drawer_nav('INSTRUCTOR ACCOUNT', onTap: () => _onTabBody(2)),
+        if (_role == 'Admin') 
+        drawer_nav('INSTRUCTOR ACCOUNT', onTap: () => _onTabBody(2)),
+        
+        if (_role == 'Prof') 
+        drawer_nav('GROUP ACCOUNT', onTap: () => _onTabBody(2)),
 
+        drawer_nav('CONCERNS & FEEDBACK', onTap: () => _onTabBody(3)),
+   
         Spacer(),
 
         Padding(

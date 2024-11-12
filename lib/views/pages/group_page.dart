@@ -8,9 +8,13 @@ import '../styles.dart';
 
 class GroupHomepage extends StatefulWidget {
 
-  final String role, nickname, title, name, suffix;
+  final String role, groupNumber, section, title;
 
-  GroupHomepage({required this.role, required this.nickname, required this.title, required this.name, required this.suffix});
+  GroupHomepage({
+    required this.role, 
+    required this.title, 
+    required this.groupNumber, 
+    required this.section});
 
   @override
   State<GroupHomepage> createState() => _GroupHomepageState();
@@ -18,48 +22,78 @@ class GroupHomepage extends StatefulWidget {
 
 class _GroupHomepageState extends State<GroupHomepage> {
 
-  final robotBoxes1 = RobotBoxesStyles(0.9);
-
-  final robotBoxes2 = RobotBoxesStyles(1.1);
+  String get _groupNumStr => widget.groupNumber;
+  String get _section => widget.section;
 
   int _selectedIndex = 0;
   String AppBarTitle = '';
+  String titleContainer = '';
+  String headerTitle = '';
+  String boxNumStr = '';
+
   bool isActive = false;
+  bool isGroup = true;
   String get _role => widget.role;
-  String get _nickname => widget.nickname;
   String get _title => widget.title;
-  String get _name => widget.name;
-  String get _suffix => widget.suffix;
+
+  @override
+  void initState() {
+    super.initState();
+    _onCheckGroupNum(_groupNumStr); // Set initial values based on group number
+  }
 
   void _onSelectTab(int index) {
     setState(() {
       _selectedIndex = index;
       isActive = true;
     });
-    
-    Navigator.pop(context);
 
-    switch (index){
-      case 0: AppBarTitle = 'RIMS - CCS'; 
-        break;
-      case 1: AppBarTitle = 'PROFILE SETTING'; 
-        break;
-      case 2: AppBarTitle = 'GROUP ACCOUNT'; 
-        break;   
-    }
+    if (index <= 2) {
+      Navigator.pop(context);
+
+      switch (index) {
+        case 0:
+          AppBarTitle = 'RIMS - CCS';
+          break;
+        case 1:
+          AppBarTitle = 'PROFILE SETTING';
+          break;
+        case 2:
+          AppBarTitle = 'INSTRUCTOR ACCOUNT';
+          break;  
+      }
+    } 
   }
+
+  void _onCheckGroupNum (String groupNum) {
+    if (groupNum == "1" || groupNum == "2" || groupNum == "3" || groupNum =="4") {
+        titleContainer = 'Module';
+        headerTitle = 'MODULES';  
+      } else if (groupNum == "6" || groupNum == "5") {
+        titleContainer = 'Box';
+        headerTitle = 'BOXES';
+      }
+    }
+  
   void _onSelectBox(int index) {
     setState(() {
       _selectedIndex = index;
       isActive = true;
     });
 
-    switch (index){
-      case 3: AppBarTitle = 'BOX INFO'; 
-        break;    
+    switch (index) {
+      case 4:
+        AppBarTitle = 'BOX INFO';
+        break;
     }
   }
 
+  void _onGetBoxNum(String boxNum) {
+    setState(() {
+      boxNumStr = boxNum;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +104,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
         title: Padding(
           padding: const EdgeInsets.only(top: 7),
           child: Text(
-            isActive ? AppBarTitle : 'RIMS - CCS',
+            'ROBOTRACK',
             style: TextStyle(
               fontFamily: 'Mina',
               fontSize: 25,
@@ -141,7 +175,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
                   Padding(
                     padding: EdgeInsets.only(top: 5),
                     child: Text(
-                      '$_role $_nickname',
+                      '$_role $_groupNumStr',
                       style: TextStyle(
                         fontFamily: 'Mina',
                         fontSize: 30,
@@ -171,10 +205,21 @@ class _GroupHomepageState extends State<GroupHomepage> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          // Boxes(
-          //   key: ValueKey(_selectedIndex),
-          //   onSelectBox: _onSelectBox),
-          // SelectedBox()
+          Boxes(
+            role: _role,
+            groupNumStr: _groupNumStr,
+            onGetBoxNum: _onGetBoxNum,
+            key: ValueKey(_selectedIndex),
+            headerTitle: headerTitle,
+            title: titleContainer,
+            onSelectBox: _onSelectBox
+            ),
+          SelectedBox(
+            key: ValueKey(_selectedIndex),
+            loginName: _section, 
+            boxNumStr: boxNumStr, 
+            groupNumStr: _groupNumStr, 
+            titleContainer: titleContainer)
         ],
       )
     );

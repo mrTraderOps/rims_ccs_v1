@@ -33,7 +33,7 @@ class FirestoreService {
       if (user != null) {
         // Update Firestore nickname
         await _firestore.collection('users').doc(user.uid).update({
-          'nickname': nickname,
+          'Nickname': nickname,
         });
 
         // Update Firebase Authentication email

@@ -12,7 +12,7 @@ class RIMSLogoTitle extends StatelessWidget {
       children: [
         RimsLogo(),
         SizedBox(height: 20),
-        Text('RIMS - CCS', style: Ui_fonts.TitleTextBoldBlack,),
+        Text('ROBOTRACK', style: Ui_fonts.TitleTextBoldBlack,),
         Text('Robotics Inventory Management System', style: Ui_fonts.SmallTitleTextBoldBlack)
       ],
     ); 

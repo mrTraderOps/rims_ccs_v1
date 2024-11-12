@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -73,7 +75,7 @@ class SelectedBoxServiceCrud {
 
 
   // Define the desired key order
-  const List<String> keyOrder = ['num', 'description', 'qty'];
+  const List<String> keyOrder = ['num', '_itemName', 'qty'];
 
   // Extract values based on the specified order and include docId
   return querySnapshot.docs.map((doc) {
@@ -84,22 +86,24 @@ class SelectedBoxServiceCrud {
     }).toList();
   }
 
+  //
   Future<List<List<dynamic>>> fetchRecordData(String collectionPath) async {
   QuerySnapshot querySnapshot = await _firestore
       .collection(collectionPath)
-      .orderBy('date', descending: true) // Order by date in descending order
+      .orderBy('Date', descending: true) // Order by date in descending order
       .get();
 
   // Define the desired key order
-  const List<String> keyOrder = ['date', 'section', 'groupNum', 'remarks'];
+  const List<String> keyOrder = ['Date', 'Section', 'Group', 'Remarks'];
 
   // Extract values based on the specified order and format the date
   return querySnapshot.docs.map((doc) {
     final data = doc.data() as Map<String, dynamic>;
 
     // Format the date from Timestamp
-    final Timestamp timestamp = data['date'];
-    final formattedDate = DateFormat('MM-dd-yyyy').format(timestamp.toDate());
+    final Timestamp timestamp = data['Date'];
+    final formattedDate = DateFormat('hh:mma - dd/MM')
+      .format(timestamp.toDate().toLocal());
 
     // Replace the original 'date' value with the formatted date
     return [
@@ -148,25 +152,25 @@ class SelectedBoxServiceCrud {
 
   // Fetch ModuleParts
   Future<List<Map<String, dynamic>>> fetchModuleParts(String moduleNum) async {
-  try {
-    // Fetch the document from the Firestore collection
-    DocumentSnapshot documentSnapshot = await _firestore.collection('modules').doc('module$moduleNum').get();
+    try {
+      // Fetch the document from the Firestore collection
+      DocumentSnapshot documentSnapshot = await _firestore.collection('modules').doc('module$moduleNum').get();
 
-    // Check if the document exists
-    if (documentSnapshot.exists) {
-      // Extract the 'Parts' field from the document
-      List<dynamic> partsList = documentSnapshot['Parts'];
+      // Check if the document exists
+      if (documentSnapshot.exists) {
+        // Extract the 'Parts' field from the document
+        List<dynamic> partsList = documentSnapshot['Parts'];
 
-      // Convert the dynamic list to a list of maps
-      List<Map<String, dynamic>> parts = List<Map<String, dynamic>>.from(partsList);
+        // Convert the dynamic list to a list of maps
+        List<Map<String, dynamic>> parts = List<Map<String, dynamic>>.from(partsList);
 
-      return parts;
-    } else {
-      throw Exception('Module1 parts not found');
+        return parts;
+      } else {
+        throw Exception('Module1 parts not found');
+      }
+    } catch (e) {
+      print('Error fetching Module1 parts: $e');
+      throw Exception('Failed to fetch Module1 parts');
     }
-  } catch (e) {
-    print('Error fetching Module1 parts: $e');
-    throw Exception('Failed to fetch Module1 parts');
   }
-}
 }

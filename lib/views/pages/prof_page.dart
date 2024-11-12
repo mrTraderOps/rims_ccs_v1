@@ -31,17 +31,19 @@ class _ProfHomepageState extends State<ProfHomepage> {
   String newNickname = '';
   String boxNumStr = '';
   String groupNumStr = '';
+  String groupAccount = 'Group';
 
   bool isActive = false;
   String get _role => widget.role;
   String get _title => widget.title;
   String get _name => widget.name;
   String get _suffix => widget.suffix;
+  String get _nickname => widget.nickname;
 
   @override
   void initState () {
     super.initState();
-    newNickname = widget.nickname;
+    newNickname = _nickname;
   }
 
   void _onSelectTab(int index) {
@@ -55,13 +57,13 @@ class _ProfHomepageState extends State<ProfHomepage> {
 
       switch (index) {
         case 0:
-          AppBarTitle = 'RIMS - CCS';
+          AppBarTitle = 'ROBOTRACK';
           break;
         case 1:
           AppBarTitle = 'PROFILE SETTING';
           break;
         case 2:
-          AppBarTitle = 'INSTRUCTOR ACCOUNT';
+          AppBarTitle = '${groupAccount.toUpperCase()} ACCOUNT';
           break;  
       }
     } 
@@ -129,7 +131,7 @@ class _ProfHomepageState extends State<ProfHomepage> {
         title: Padding(
           padding: const EdgeInsets.only(top: 7),
           child: Text(
-            isActive ? AppBarTitle : 'RIMS - CCS',
+            isActive ? AppBarTitle : 'ROBOTRACK',
             style: TextStyle(
                 fontFamily: 'Mina',
                 fontSize: 25,
@@ -239,9 +241,11 @@ class _ProfHomepageState extends State<ProfHomepage> {
           ),
           GroupAccount(
             key: ValueKey(_selectedIndex),
-            buttonTitle: 'Instructor',
+            buttonTitle: groupAccount,
+            role: _role
           ),
           Boxes(
+            role: _role,
             groupNumStr: groupNumStr,
             onGetBoxNum: _onGetBoxNum,
             key: ValueKey(_selectedIndex),
@@ -249,9 +253,9 @@ class _ProfHomepageState extends State<ProfHomepage> {
             title: titleContainer,
             onSelectBox: _onSelectBox),
           SelectedBox(
+            loginName: _role,
             key: ValueKey(_selectedIndex),
             titleContainer: titleContainer,
-            title: titleContainer.toUpperCase(),
             groupNumStr: groupNumStr,
             boxNumStr: boxNumStr
           )

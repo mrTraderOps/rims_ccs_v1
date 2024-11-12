@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:rims_ccs_v1/views/fragments/dialogs/addBox_dialog.dart';
+import 'package:rims_ccs_v1/views/fragments/dialogs/add/addBox_dialog.dart';
 
 void showAddBoxDialog(BuildContext context, String title,  String groupNum, VoidCallback onAddRefresh) {
   showDialog(
