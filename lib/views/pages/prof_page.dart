@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/account_setting/account_setting.dart';
 import 'package:rims_ccs_v1/views/fragments/box/boxes.dart';
+import 'package:rims_ccs_v1/views/fragments/feedback/feedback.dart';
 import 'package:rims_ccs_v1/views/fragments/group_account/group_account.dart';
 import 'package:rims_ccs_v1/views/fragments/groups/Groups.dart';
 import 'package:rims_ccs_v1/views/fragments/selected_box/selected_box.dart';
@@ -31,9 +32,9 @@ class _ProfHomepageState extends State<ProfHomepage> {
   String newNickname = '';
   String boxNumStr = '';
   String groupNumStr = '';
-  String groupAccount = 'Group';
 
   bool isActive = false;
+  bool isFeedback = false;
   String get _role => widget.role;
   String get _title => widget.title;
   String get _name => widget.name;
@@ -50,9 +51,10 @@ class _ProfHomepageState extends State<ProfHomepage> {
     setState(() {
       _selectedIndex = index;
       isActive = true;
+      isFeedback = false;
     });
 
-    if (index <= 2) {
+    if (index <= 3) {
       Navigator.pop(context);
 
       switch (index) {
@@ -63,8 +65,14 @@ class _ProfHomepageState extends State<ProfHomepage> {
           AppBarTitle = 'PROFILE SETTING';
           break;
         case 2:
-          AppBarTitle = '${groupAccount.toUpperCase()} ACCOUNT';
-          break;  
+          AppBarTitle = 'GROUP ACCOUNT';
+          break;
+        case 3:
+          setState(() {
+             isFeedback = true;
+          });
+          AppBarTitle = 'CONCERNS & FEEDBACK';
+          break;
       }
     } 
   }
@@ -79,7 +87,7 @@ class _ProfHomepageState extends State<ProfHomepage> {
 
     if (groupNum < 5) {
       switch (index) {
-      case 3:
+      case 4:
         AppBarTitle = 'GROUP $groupNum - MODULES';
         titleContainer = 'Module';
         headerTitle = 'MODULES';
@@ -87,7 +95,7 @@ class _ProfHomepageState extends State<ProfHomepage> {
       }
     } else {
       switch (index) {
-      case 3:
+      case 4:
         AppBarTitle = 'GROUP $groupNum - BOXES';
         titleContainer = 'Box';
         headerTitle = 'BOXES';
@@ -103,7 +111,7 @@ class _ProfHomepageState extends State<ProfHomepage> {
     });
 
     switch (index) {
-      case 4:
+      case 5:
         AppBarTitle = 'BOX INFO';
         break;
     }
@@ -124,7 +132,7 @@ class _ProfHomepageState extends State<ProfHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 176, 135, 38),
+      backgroundColor: isFeedback ? Ui_Colors.skyBlue : const Color.fromARGB(255, 176, 135, 38),
       appBar: AppBar(
         toolbarHeight: 70.0,
         backgroundColor: Ui_Colors.darkBlue,
@@ -240,10 +248,11 @@ class _ProfHomepageState extends State<ProfHomepage> {
             updateNickname: _onChangeNickname,
           ),
           GroupAccount(
+            role: _role,
             key: ValueKey(_selectedIndex),
-            buttonTitle: groupAccount,
-            role: _role
+            buttonTitle: 'Group',
           ),
+          FeedbackPage(),
           Boxes(
             role: _role,
             groupNumStr: groupNumStr,

@@ -43,13 +43,13 @@ class _BoxState extends State<Box> {
   @override
   void initState() {
     super.initState();
-    onCheckAdmin(_isAdmin, _role);
+    onCheckAdmin(_isAdmin,_role);
   }
 
   void onCheckAdmin (bool isAdmin, String role) {
     if (!_isAdmin && role == 'Group') {
       setState(() {
-        onSelectedBox = onSelectedBox - 4; 
+        onSelectedBox = onSelectedBox - 3; 
       });
     }
   }

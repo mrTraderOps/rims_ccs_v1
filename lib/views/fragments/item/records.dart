@@ -131,10 +131,13 @@ class _RecordsState extends State<Records> {
                     _color = const Color.fromARGB(255, 0, 188, 6);
                     break;
                   case 'EXCESS':
-                    _color = const Color.fromARGB(255, 216, 108, 0);
+                    _color = const Color.fromARGB(255, 213, 202, 0);
                     break;
                   case 'MISSING':
-                    _color = const Color.fromARGB(255, 206, 3, 0);
+                    _color = const Color.fromARGB(255, 206, 100, 0);
+                    break;
+                  case 'EXCESS & MISSING':
+                    _color = const Color.fromARGB(255, 215, 0, 0);
                     break;
                   default:
                     _color = Colors.black; // Fallback color for unexpected cases

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/box/boxes.dart';
+import 'package:rims_ccs_v1/views/fragments/feedback/feedback.dart';
 import 'package:rims_ccs_v1/views/fragments/selected_box/selected_box.dart';
 import '../fragments/drawer/drawer.dart';
 import '../styles.dart';
@@ -33,6 +34,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
 
   bool isActive = false;
   bool isGroup = true;
+  bool isFeedback = false;
   String get _role => widget.role;
   String get _title => widget.title;
 
@@ -46,6 +48,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
     setState(() {
       _selectedIndex = index;
       isActive = true;
+      isFeedback = false;
     });
 
     if (index <= 2) {
@@ -53,14 +56,12 @@ class _GroupHomepageState extends State<GroupHomepage> {
 
       switch (index) {
         case 0:
-          AppBarTitle = 'RIMS - CCS';
+          AppBarTitle = 'ROBOTRACK';
           break;
         case 1:
-          AppBarTitle = 'PROFILE SETTING';
+          AppBarTitle = 'CONCERNS & FEEDBACK';
+          isFeedback = true;
           break;
-        case 2:
-          AppBarTitle = 'INSTRUCTOR ACCOUNT';
-          break;  
       }
     } 
   }
@@ -82,7 +83,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
     });
 
     switch (index) {
-      case 4:
+      case 2:
         AppBarTitle = 'BOX INFO';
         break;
     }
@@ -97,7 +98,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(255, 176, 135, 38),
+      backgroundColor:isFeedback ? Ui_Colors.skyBlue : const Color.fromARGB(255, 176, 135, 38),
       appBar: AppBar(
         toolbarHeight: 70.0,
         backgroundColor: Ui_Colors.darkBlue,
@@ -214,6 +215,7 @@ class _GroupHomepageState extends State<GroupHomepage> {
             title: titleContainer,
             onSelectBox: _onSelectBox
             ),
+          FeedbackPage(),
           SelectedBox(
             key: ValueKey(_selectedIndex),
             loginName: _section, 

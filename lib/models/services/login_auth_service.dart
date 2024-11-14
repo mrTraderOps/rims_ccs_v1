@@ -9,6 +9,7 @@ class LoginAuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> login(
+
     BuildContext context,
     String email,
     String password,
@@ -84,6 +85,14 @@ class LoginAuthService {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error logging in: ${e.toString()}')),
       );
+    }
+  }
+
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (error) {
+      throw error.toString();
     }
   }
 }

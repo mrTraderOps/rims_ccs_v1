@@ -63,6 +63,10 @@ class _DrawerFragmentState extends State<DrawerFragment> {
         if (_role == 'Prof') 
         drawer_nav('GROUP ACCOUNT', onTap: () => _onTabBody(2)),
 
+        if (_role == 'Group')
+        drawer_nav('CONCERNS & FEEDBACK', onTap: () => _onTabBody(1)),
+
+        if (_role == 'Admin' || _role == 'Prof')
         drawer_nav('CONCERNS & FEEDBACK', onTap: () => _onTabBody(3)),
    
         Spacer(),

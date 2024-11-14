@@ -38,7 +38,7 @@ class RegisterAuthService {
         'Nickname': nickname.trim(),
         'Role': 'Admin',
         'Title': title.trim(),
-        'SuffixTitle': suffix.trim(),
+        'Suffix': suffix.trim(),
       });
 
       // Close the loading dialog
@@ -49,11 +49,11 @@ class RegisterAuthService {
 
       if (userDoc.exists) {
         return {
-          'role': userDoc['role'],
-          'nickname': userDoc['nickname'],
-          'title': userDoc['title'],
-          'name': userDoc['name'],
-          'suffix': userDoc['suffix'],
+          'Role': userDoc['Role'],
+          'Nickname': userDoc['Nickname'],
+          'Title': userDoc['Title'],
+          'Name': userDoc['Name'],
+          'Suffix': userDoc['Suffix'],
         };
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

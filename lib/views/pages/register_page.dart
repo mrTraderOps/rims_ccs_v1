@@ -36,11 +36,11 @@ class _RegisterPageState extends State<RegisterPage> {
         context,
         MaterialPageRoute(
           builder: (context) => HomeScreen(
-            role: result['role']!,
-            nickname: result['nickname']!,
-            title: result['title']!,
-            name: result['name']!,
-            suffix: result['suffix']!,
+            role: result['Role']!,
+            nickname: result['Nickname']!,
+            title: result['Title']!,
+            name: result['Name']!,
+            suffix: result['Suffix']!,
           ),
         ),
       );
@@ -65,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Center(
                     child: Text(
-                      'RIMS-CCS',
+                      'ROBOTRACK',
                       style: Ui_fonts.TitleTextBoldWhite,)
                     ),
                   Text(

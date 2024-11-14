@@ -21,21 +21,20 @@ class InventoryCheckService {
     bool hasChanges = false;
     
     if (diff == 0) {
-   
-      return hasChanges;
-    }
-    else if (diff < 0) {
-      await _updateFirestore('/inventory/$docId/missing', num, itemName, diff.abs());
-      hasChanges = true;
-    } else if (diff > 0) {
-      await _updateFirestore('/inventory/$docId/excess', num, itemName, diff);
-      hasChanges = true;
-    }
+    // Delete from both 'missing' and 'excess' if no difference exists
+    await deleteItemByNum(num, docId, deleteFromMissing: true, deleteFromExcess: true);
+  } else if (diff < 0) {
+    // Handle missing: delete from 'excess' and add to 'missing'
+    await deleteItemByNum(num, docId, deleteFromExcess: true); // Remove excess item
+    await _updateFirestore('/inventory/$docId/missing', num, itemName, diff.abs());
+    hasChanges = true;
+  } else if (diff > 0) {
+    // Handle excess: delete from 'missing' and add to 'excess'
+    await deleteItemByNum(num, docId, deleteFromMissing: true); // Remove missing item
+    await _updateFirestore('/inventory/$docId/excess', num, itemName, diff);
+    hasChanges = true;
+  }
 
-    // Record remarks
-    String remarks = (diff < 0) ? 'MISSING' : (diff > 0) ? 'EXCESS' : '';
-
-    await recordData(docId, section, groupNumStr, remarks);
 
     return hasChanges; // Return if changes were made
   }
@@ -78,6 +77,7 @@ class InventoryCheckService {
     }
   }
 
+  //Final Checking of Box/Module
   Future<void> statusBoxModule(String docId) async {
     try {
       String remarks;
@@ -111,6 +111,71 @@ class InventoryCheckService {
     }
   }
 
+  // Check first the box or module
+  Future<String> checkBoxModule(String docId) async {
+    try {
+      String remarks;
+      // Check for documents in 'missing' collection
+      final missingSnapshot = await _firestore.collection('/inventory/$docId/missing').get();
+      bool hasMissing = missingSnapshot.docs.isNotEmpty;
+
+      // Check for documents in 'excess' collection
+      final excessSnapshot = await _firestore.collection('/inventory/$docId/excess').get();
+      bool hasExcess = excessSnapshot.docs.isNotEmpty;
+
+      // Determine remarks based on missing and excess status
+      if (hasMissing && hasExcess) {
+        remarks = 'EXCESS & MISSING';
+      } else if (hasMissing) {
+        remarks = 'MISSING';
+      } else if (hasExcess) {
+        remarks = 'EXCESS';
+      } else {
+        remarks = 'COMPLETE';
+        
+      }
+
+      print('Status updated to: $remarks for $docId.');
+
+      return remarks;
+    } catch (e) {
+      print("Error updating status: $e");
+      return 'ERROR IN CHECK BOX';
+    }
+  }
+
+  // Delete Item by Num
+  Future<void> deleteItemByNum(String num, String docId, {bool deleteFromMissing = true, bool deleteFromExcess = true}) async {
+  final String missingPath = 'inventory/$docId/missing';
+  final String excessPath = 'inventory/$docId/excess';
+
+  try {
+    // Helper function to delete documents by 'num' in a specified collection
+    Future<void> _deleteFromCollection(String collectionPath) async {
+      final querySnapshot = await _firestore
+          .collection(collectionPath)
+          .where('num', isEqualTo: num)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs) {
+          await doc.reference.delete();
+          print('Document with num: $num deleted successfully from $collectionPath.');
+        }
+      } else {
+        print('No document found with num: $num in $collectionPath.');
+      }
+    }
+
+    // Execute based on the parameters
+    if (deleteFromMissing) await _deleteFromCollection(missingPath);
+    if (deleteFromExcess) await _deleteFromCollection(excessPath);
+
+  } catch (e) {
+    print("Error deleting data: $e");
+  }
+}
+
   // Delete All Inventory Caller
   Future<void> deleteInventoryData(String groupNumStr, String title, String boxNumStr) async {
   String docId = 'group$groupNumStr-${title.toLowerCase()}$boxNumStr';
@@ -138,5 +203,4 @@ class InventoryCheckService {
     await doc.reference.delete();
   }
 }
-
 }

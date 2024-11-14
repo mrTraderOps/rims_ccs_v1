@@ -5,6 +5,7 @@ import 'package:rims_ccs_v1/models/services/selected_box_service_CRUD.dart';
 import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_Format.dart';
 import 'package:rims_ccs_v1/views/fragments/textfields/textFormField_GroupNum.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
+import 'package:flutter/services.dart'; 
 
 class AddBoxDialog extends StatefulWidget {
 
@@ -88,7 +89,33 @@ class _AddBoxDialogState extends State<AddBoxDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextformfieldFormat(textcontroller: _boxNumController, labelText: '$_title Number', obscureText: false, isUpdate: false,),
+            TextFormField(
+                controller: _boxNumController,
+                decoration: InputDecoration(
+                  labelText: '$_title Number',
+                  labelStyle: TextStyle(
+                    fontFamily: 'Mina',
+                    color: Ui_Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a $_title Number';
+                  }
+                  // Check if input is a single digit between 0-5
+                  final intValue = int.tryParse(value);
+                  if (intValue == null || intValue < 0 || intValue > 5) {
+                    return 'Please enter a digit between 0 and 5';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                  LengthLimitingTextInputFormatter(1),    // Limit input to 1 character
+                ],
+              ),
             TextformfieldGroup(textcontroller: _groupController, labelText: 'Group', obscureText: false, isUpdate: false,),
             TextformfieldFormat(textcontroller: _sectionController, labelText: 'Section', obscureText: false, isUpdate: false,),
             TextformfieldFormat(textcontroller: _statusController, labelText: 'Status', obscureText: false, isUpdate: false,),

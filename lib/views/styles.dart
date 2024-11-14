@@ -24,6 +24,13 @@ class Ui_fonts {
   color: Ui_Colors.white
   );
 
+  static const TextStyle LargeTitleTextBoldWhite = TextStyle(
+  fontFamily: fontNameDefault,
+  fontWeight: FontWeight.bold,
+  fontSize: 35,
+  color: Ui_Colors.white
+  );
+
   static const TextStyle TitleTextBoldBlack = TextStyle(
   fontFamily: fontNameDefault,
   fontWeight: FontWeight.bold,

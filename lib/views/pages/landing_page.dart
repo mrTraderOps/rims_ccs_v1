@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:rims_ccs_v1/views/fragments/dialogs/showAdminkeyDialog.dart';
-import 'package:rims_ccs_v1/views/fragments/global_widget/RIMS_logo.dart';
 import 'package:rims_ccs_v1/views/styles.dart';
 
 class LandingPage extends StatefulWidget {
@@ -11,7 +8,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,54 +20,61 @@ class _LandingPageState extends State<LandingPage> {
               flex: 7,
               child: Center(
                 child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    RimsLogo(),
-                    SizedBox(height: 20),
-                    Text('ROBOTRACK', style: Ui_fonts.TitleTextBoldWhite,),
-                    Text('Robotics Inventory Management System', style: Ui_fonts.SmallTitleTextBoldSkyBlue),
-                    SizedBox(height: 40),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 30.0),
-                      child: Center(
+                    Image.asset(
+                      'assets/images/robotlanding.png',
+                      fit: BoxFit.contain,
+                    ),
+                    Text(
+                      'ROBOTRACK',
+                      style: Ui_fonts.LargeTitleTextBoldWhite,
+                    ),
+                    SizedBox(height: 30),
+
+                    // Ensure buttons are of the same width
+                    SizedBox(
+                      width: 200, // Specify desired width
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 15.0),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/login');
                           },
                           child: Text('Login'),
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 83.0, vertical: 15.0),
+                            padding: EdgeInsets.symmetric(vertical: 15.0),
                             backgroundColor: Ui_Colors.lightBlue,
                             textStyle: TextStyle(
                               fontSize: 18.0,
-                              fontWeight: FontWeight.bold
-                              ),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 30.0),
-                      child: Center(
+                    SizedBox(
+                      width: 200, // Ensure the same width
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 30.0),
                         child: ElevatedButton(
                           onPressed: () => showAdminKeyDialog(context),
                           child: Text('Register as Admin'),
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+                            padding: EdgeInsets.symmetric(vertical: 15.0),
                             backgroundColor: Ui_Colors.lightBlue,
                             textStyle: TextStyle(
                               fontSize: 18.0,
-                              fontWeight: FontWeight.bold
-                              ),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ],
-                )
+                ),
               ),
             ),
-            // 2nd Box for Other Content
           ],
         ),
       ),

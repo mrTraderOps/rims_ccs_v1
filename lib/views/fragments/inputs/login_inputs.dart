@@ -58,7 +58,7 @@ class LoginInputs extends StatelessWidget {
                       ),
                     ),
                   onPressed: () => {
-
+                    Navigator.pushNamed(context, '/reset_password')
                   },
                 )
               ],
