@@ -35,7 +35,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       });
 
       // Send feedback email
-      bool success = await sendFeedbackEmail(_emailController.text, _feedback.text);
+      bool success = await sendFeedbackEmail(_feedback.text);
 
       setState(() {
         _isLoading = false; // Hide loading indicator
@@ -113,24 +113,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Email Input with Validator
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                            ),
-                            validator: validateEmail,
-                          ),
-                          SizedBox(height: 20),
-            
                           // Feedback Input
                           TextFormField(
                             controller: _feedback,
                             maxLines: 4,
                             decoration: InputDecoration(
                               labelText: 'Anything else you’d like to share?',
-                              hintText: 'I have feedback on...',
                               border: OutlineInputBorder(),
                             ),
                           ),
